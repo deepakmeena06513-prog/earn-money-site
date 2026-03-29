@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Earn Money</title>
+</head>
+
+<body style="text-align:center;">
+
+<h1>💰 Earn Money</h1>
+
+<button onclick="earn()">Earn</button>
+
+<p id="coins">Coins: 0</p>
+
+<script>
+let coins = localStorage.getItem("coins") || 0;
+document.getElementById("coins").innerHTML = "Coins: " + coins;
+
+function earn(){
+  coins = parseInt(coins) + 10;
+  localStorage.setItem("coins", coins);
+  document.getElementById("coins").innerHTML = "Coins: " + coins;
+}
+</script>
+
+</body>
+</html>
