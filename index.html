@@ -1,26 +1,67 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Earn Money</title>
+  <title>Deepak Earn App</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial;
+      background: #f2f2f2;
+    }
+    h1 {
+      margin-top: 50px;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #earn { background: green; color: white; }
+    #bonus { background: orange; }
+  </style>
 </head>
 
-<body style="text-align:center;">
+<body>
 
-<h1>💰 Earn Money</h1>
+  <h1>💰 Deepak Earn App</h1>
 
-<button onclick="earn()">Earn</button>
+  <h2>Coins: <span id="coins">0</span></h2>
 
-<p id="coins">Coins: 0</p>
+  <button id="earn" onclick="earn()">Earn +10</button>
+  <br>
+  <button id="bonus" onclick="bonus()">Daily Bonus 🎁</button>
 
 <script>
-let coins = localStorage.getItem("coins") || 0;
-document.getElementById("coins").innerHTML = "Coins: " + coins;
+  let coins = localStorage.getItem("coins");
 
-function earn(){
-  coins = parseInt(coins) + 10;
-  localStorage.setItem("coins", coins);
-  document.getElementById("coins").innerHTML = "Coins: " + coins;
-}
+  if (coins == null) {
+    coins = 0;
+  }
+
+  document.getElementById("coins").innerText = coins;
+
+  function earn() {
+    coins = parseInt(coins) + 10;
+    localStorage.setItem("coins", coins);
+    document.getElementById("coins").innerText = coins;
+  }
+
+  function bonus() {
+    let last = localStorage.getItem("bonus");
+
+    let today = new Date().toDateString();
+
+    if (last == today) {
+      alert("Bonus already taken today!");
+    } else {
+      coins = parseInt(coins) + 50;
+      localStorage.setItem("coins", coins);
+      localStorage.setItem("bonus", today);
+      document.getElementById("coins").innerText = coins;
+      alert("🎉 50 Coins Added!");
+    }
+  }
 </script>
 
 </body>
