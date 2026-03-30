@@ -1,3 +1,9 @@
+<div id="loginBox">
+  <h3>Login</h3>
+  <input type="text" id="user" placeholder="Enter name"><br><br>
+  <button onclick="login()">Login</button>let balance = localStorage.getItem("balance");let user = localStorage.getItem("user");
+let balance = localStorage.getItem(user+"_balance");
+</div>
 <!DOCTYPE html>
 <html>
 <head>
@@ -136,7 +142,27 @@ function endGame(){
   document.getElementById("pool").innerText = pool;
   document.getElementById("score").innerText = score;
 }
-</script>
+function login(){
+  let user = document.getElementById("user").value;
+  if(user==""){
+    alert("Enter name");
+  } else {
+    localStorage.setItem("user", user);
+    document.getElementById("loginBox").style.display="none";
+  }
+}
+
+window.onload = function(){
+  let user = localStorage.getItem("user");
+  if(user){
+    document.getElementById("loginBox").style.display="none";
+  }
+}let user = localStorage.getItem("user");
+let balance = localStorage.getItem(user+"_balance");
+
+if(balance == null) balance = 100;
+
+localStorage.setItem(user+"_balance", balance);</script>
 
 </body>
 </html>
