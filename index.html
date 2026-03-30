@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Tiger Dragon Game</title>
+<title>Advanced Tiger Game</title>
 <style>
 body {
   text-align: center;
   font-family: Arial;
-  background: linear-gradient(to right, orange, red);
+  background: linear-gradient(to right, purple, red);
   color: white;
 }
 
 .card {
   background: white;
   color: black;
-  margin: 50px auto;
+  margin: 30px auto;
   padding: 20px;
   border-radius: 15px;
   width: 300px;
@@ -25,12 +25,12 @@ button {
   width: 90%;
   border: none;
   border-radius: 10px;
-  font-size: 16px;
 }
 
 .tiger { background: orange; }
 .dragon { background: green; color: white; }
 .join { background: blue; color: white; }
+
 </style>
 </head>
 
@@ -41,6 +41,8 @@ button {
 <div class="card">
 <h3>Balance: ₹ <span id="balance">100</span></h3>
 <h3>Pool: ₹ <span id="pool">0</span></h3>
+<h3>Score: <span id="score">0</span></h3>
+<h3>Time: <span id="time">10</span>s</h3>
 
 <button class="join" onclick="join()">Join ₹10</button>
 
@@ -56,10 +58,19 @@ let balance = localStorage.getItem("balance");
 if(balance == null) balance = 100;
 
 let pool = 0;
+let score = 0;
+let time = 10;
+let timer;
 
 document.getElementById("balance").innerText = balance;
 
-let correct = "tiger";
+let questions = [
+  {q:"5+3=?", ans:"tiger"},
+  {q:"10-5=?", ans:"dragon"},
+  {q:"2+2=?", ans:"tiger"}
+];
+
+let current = 0;
 
 function join(){
   if(balance < 10){
@@ -70,20 +81,50 @@ function join(){
     localStorage.setItem("balance", balance);
     document.getElementById("balance").innerText = balance;
     document.getElementById("pool").innerText = pool;
-    alert("Joined!");
+    startGame();
   }
 }
 
+function startGame(){
+  score = 0;
+  time = 10;
+  current = 0;
+  loadQuestion();
+  startTimer();
+}
+
 function loadQuestion(){
-  document.getElementById("question").innerText = "5 + 3 = ?";
-  correct = "tiger"; // tiger = correct
+  if(current >= questions.length){
+    endGame();
+    return;
+  }
+  document.getElementById("question").innerText = questions[current].q;
 }
 
 function answer(choice){
-  if(choice == correct){
-    let win = pool * 0.8; // 80% payout
+  if(choice == questions[current].ans){
+    score++;
+  }
+  current++;
+  loadQuestion();
+}
+
+function startTimer(){
+  timer = setInterval(()=>{
+    time--;
+    document.getElementById("time").innerText = time;
+    if(time <= 0){
+      clearInterval(timer);
+      endGame();
+    }
+  },1000);
+}
+
+function endGame(){
+  let win = pool * 0.8; // 80% payout
+  if(score >= 2){
     balance = parseInt(balance) + win;
-    alert("You won ₹" + win + " 🎉");
+    alert("You won ₹"+win+" 🎉");
   } else {
     alert("You lost ❌");
   }
@@ -93,11 +134,8 @@ function answer(choice){
 
   pool = 0;
   document.getElementById("pool").innerText = pool;
-
-  loadQuestion();
+  document.getElementById("score").innerText = score;
 }
-
-loadQuestion();
 </script>
 
 </body>
