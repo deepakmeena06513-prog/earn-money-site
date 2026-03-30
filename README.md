@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Deepak Earn App</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: linear-gradient(to right, #4facfe, #00f2fe);
+      text-align: center;
+      color: white;
+    }
+
+    .card {
+      background: white;
+      color: black;
+      margin: 50px auto;
+      padding: 20px;
+      border-radius: 15px;
+      width: 80%;
+      max-width: 300px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    button {
+      padding: 10px;
+      margin: 8px;
+      width: 90%;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .earn { background: green; color: white; }
+    .bonus { background: orange; }
+    .withdraw { background: gray; color: white; }
+    .ad { background: purple; color: white; }
+  </style>
+</head>
+
+<body>
+
+  <h1>💰 Deepak Earn App</h1>
+
+  <div class="card">
+    <h2>Coins: <span id="coins">0</span></h2>
+
+    <button class="earn" onclick="earn()">Earn +10</button>
+    <button class="bonus" onclick="bonus()">Daily Bonus 🎁</button>
+    <button class="withdraw" onclick="withdraw()">Withdraw 💸</button>
+    <button class="ad" onclick="watchAd()">Watch Ad 🎥 (+50)</button>
+  </div>
+
+<script>
+  let coins = localStorage.getItem("coins");
+  if (coins == null) coins = 0;
+
+  document.getElementById("coins").innerText = coins;
+
+  function earn() {
+    coins = parseInt(coins) + 10;
+    localStorage.setItem("coins", coins);
+    document.getElementById("coins").innerText = coins;
+  }
+
+  function bonus() {
+    let last = localStorage.getItem("bonus");
+    let today = new Date().toDateString();
+
+    if (last == today) {
+      alert("Bonus already taken!");
+    } else {
+      coins = parseInt(coins) + 50;
+      localStorage.setItem("coins", coins);
+      localStorage.setItem("bonus", today);
+      document.getElementById("coins").innerText = coins;
+      alert("🎉 50 Coins Added!");
+    }
+  }
+
+  function withdraw() {
+    if (coins < 500) {
+      alert("Minimum 500 coins required!");
+    } else {
+      alert("Withdraw request submitted!");
+    }
+  }
+
+  function watchAd() {
+    alert("Ad watched!");
+    coins = parseInt(coins) + 50;
+    localStorage.setItem("coins", coins);
+    document.getElementById("coins").innerText = coins;
+  }
+</script>
+
+</body>
+</html>
