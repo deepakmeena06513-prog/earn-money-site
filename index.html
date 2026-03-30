@@ -66,3 +66,15 @@
 
 </body>
 </html>
+<br><br>
+<button onclick="withdraw()">Withdraw 💸</button>
+
+<script>
+function withdraw(){
+  if (coins < 500) {
+    alert("Minimum 500 coins required!");
+  } else {
+    alert("Withdraw request submitted!");
+  }
+}
+</script>
