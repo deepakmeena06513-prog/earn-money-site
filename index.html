@@ -1,4 +1,4 @@
-<div id="loginBox">
+oo<div id="loginBox">
   <h2>Login</h2>
   <input type="text" id="name" placeholder="Enter name"><br><br>
   <button onclick="login()">Login</button>
@@ -143,20 +143,8 @@ h1 {
   font-size: 28px;
 }
 </style>
- document.getElementById("loginBox").style.display = "none";
-  }
-}<script>  
-function login() {
-  let name = document.getElementById("name").value;
-  if(name == "") 
-    document.getElementById("loginBox").style.display = "none";
-  }
-}
-
+<script>  
 window.onload = function() {
   let user = localStorage.getItem("user");
-  if(user) {
-    document.getElementById("loginBox").style.display = "none";
-  }
-}
+  if(user) 
 </script>
