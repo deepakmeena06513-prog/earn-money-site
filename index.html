@@ -1,150 +1,82 @@
-oo<div id="loginBox">
-  <h2>Login</h2>
-  <input type="text" id="name" placeholder="Enter name"><br><br>
-  <button onclick="login()">Login</button>
-</div>
-<div id="loginBox">
-  <h2>Login</h2>
-  <input type="text" id="name" placeholder="Enter name"><br><br>
-  <button onclick="login()">Login</button>
-</div
-<head<body>
-
+<!DOCTYPE html>
+<html>
 <head>
-  <title>Deepak Earn App</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial;
-      background: linear-gradient(to right, #4facfe, #00f2fe);
-      text-align: center;
-      color: white;
-    }
-
-    .card {
-      background: white;
-      color: black;
-      margin: 50px auto;
-      padding: 20px;
-      border-radius: 15px;
-      width: 80%;
-      max-width: 300px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-    }
-
-    button {
-      padding: 10px;
-      margin: 8px;
-      width: 90%;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    .earn { background: green; color: white; }
-    .bonus { background: orange; }
-    .withdraw { background: gray; color: white; }
-    .ad { background: purple; color: white; }
-  </style>
+<title>Contest App</title>
+<style>
+body {
+  font-family: Arial;
+  text-align: center;
+  background: linear-gradient(to right, #4facfe, #00f2fe);
+}
+.card {
+  background: white;
+  padding: 20px;
+  margin: 50px auto;
+  width: 300px;
+  border-radius: 15px;
+}
+button {
+  width: 90%;
+  padding: 10px;
+  margin: 10px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+}
+.join { background: green; color: white; }
+.play { background: orange; }
+.withdraw { background: gray; color: white; }
+</style>
 </head>
 
 <body>
 
-  <h1>💰 Deepak Earn App</h1>
+<h2>🏆 Contest App</h2>
 
-  <div class="card">
-    <h2>Coins: <span id="coins">0</span></h2>
+<div class="card">
+<h3>Balance: ₹ <span id="balance">100</span></h3>
 
-    <button class="earn" onclick="earn()">Earn +10</button>
-    <button class="bonus" onclick="bonus()">Daily Bonus 🎁</button>
-    <button class="withdraw" onclick="withdraw()">Withdraw 💸</button>
-    <button class="ad" onclick="watchAd()">Watch Ad 🎥 (+50)</button>
-  </div>
+<button class="join" onclick="joinContest()">Join Contest ₹10</button>
+<button class="play" onclick="playGame()">Play Quiz</button>
+<button class="withdraw" onclick="withdraw()">Withdraw</button>
+</div>
 
 <script>
-  let coins = localStorage.getItem("coins");
-  if (coins == null) coins = 0;
+let balance = localStorage.getItem("balance");
+if(balance == null) balance = 100;
+document.getElementById("balance").innerText = balance;
 
-  document.getElementById("coins").innerText = coins;
-
-  function earn() {
-    coins = parseInt(coins) + 10;
-    localStorage.setItem("coins", coins);
-    document.getElementById("coins").innerText = coins;
-  }
-
-  function bonus() {
-    let last = localStorage.getItem("bonus");
-    let today = new Date().toDateString();
-
-    if (last == today) {
-      alert("Bonus already taken!");
-    } else {
-      coins = parseInt(coins) + 50;
-      localStorage.setItem("coins", coins);
-      localStorage.setItem("bonus", today);
-      document.getElementById("coins").innerText = coins;
-      alert("🎉 50 Coins Added!");
-    }
-  }
-
-  function withdraw() {
-    if (coins < 500) {
-      alert("Minimum 500 coins required!");
-    } else {
-      alert("Withdraw request submitted!");
-    }
-  }
-
-  function watchAd() {
-    alert("Ad watched!");
-    coins = parseInt(coins) + 50;
-    localStorage.setItem("coins", coins);
-    document.getElementById("coins").innerText = coins;
-  }function login() {
-  let name = document.getElementById("name").value;
-  if(name == "") {
-    alert("Enter name");
+function joinContest() {
+  if(balance < 10){
+    alert("Not enough balance");
   } else {
-    localStorage.setItem("user", name);
-    document.getElementById("loginBox").style.display = "none";
+    balance = parseInt(balance) - 10;
+    localStorage.setItem("balance", balance);
+    document.getElementById("balance").innerText = balance;
+    alert("Joined Contest!");
   }
 }
 
-window.onload = function() {
-  let user = localStorage.getItem("user");
-  if(user) {
-    document.getElementById("loginBox").style.display = "none";
+function playGame() {
+  let answer = prompt("2 + 2 = ?");
+  if(answer == "4"){
+    balance = parseInt(balance) + 20;
+    alert("You Won ₹20 🎉");
+  } else {
+    alert("Wrong Answer ❌");
+  }
+  localStorage.setItem("balance", balance);
+  document.getElementById("balance").innerText = balance;
+}
+
+function withdraw() {
+  if(balance < 50){
+    alert("Minimum ₹50 required");
+  } else {
+    alert("Withdraw Request Sent 💰");
   }
 }
 </script>
 
 </body>
-</html><style>
-button {
-  padding: 12px;
-  margin: 10px;
-  width: 90%;
-  border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-button:hover {
-  transform: scale(1.05);
-  opacity: 0.9;
-}
-
-h1 {
-  margin-top: 20px;
-  font-size: 28px;
-}
-</style>
-<script>  
-window.onload = function() {
-  let user = localStorage.getItem("user");
-  if(user) 
-</script>
+</html>
