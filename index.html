@@ -1,4 +1,8 @@
-
+<div id="loginBox">
+  <h2>Login</h2>
+  <input type="text" id="name" placeholder="Enter name"><br><br>
+  <button onclick="login()">Login</button>
+</div>
 <div id="loginBox">
   <h2>Login</h2>
   <input type="text" id="name" placeholder="Enter name"><br><br>
@@ -156,6 +160,14 @@ function login() {
     localStorage.setItem("user", name);
     document.getElementById("loginBox").style.display = "none";
   }function login() {
+  let name = document.getElementById("name").value;
+  if(name == "") {
+    alert("Enter name");
+  } else {
+    localStorage.setItem("user", name);
+    document.getElementById("loginBox").style.display = "none";
+  }
+}function login() {
   let name = document.getElementById("name").value;
   if(name == "") {
     alert("Enter name");
