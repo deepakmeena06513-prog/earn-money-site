@@ -1,81 +1,103 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Contest App</title>
+<title>Tiger Dragon Game</title>
 <style>
 body {
-  font-family: Arial;
   text-align: center;
-  background: linear-gradient(to right, #4facfe, #00f2fe);
+  font-family: Arial;
+  background: linear-gradient(to right, orange, red);
+  color: white;
 }
+
 .card {
   background: white;
-  padding: 20px;
+  color: black;
   margin: 50px auto;
-  width: 300px;
+  padding: 20px;
   border-radius: 15px;
+  width: 300px;
 }
+
 button {
-  width: 90%;
   padding: 10px;
   margin: 10px;
+  width: 90%;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 16px;
 }
-.join { background: green; color: white; }
-.play { background: orange; }
-.withdraw { background: gray; color: white; }
+
+.tiger { background: orange; }
+.dragon { background: green; color: white; }
+.join { background: blue; color: white; }
 </style>
 </head>
 
 <body>
 
-<h2>🏆 Contest App</h2>
+<h1>🐯 Tiger vs 🐉 Dragon</h1>
 
 <div class="card">
 <h3>Balance: ₹ <span id="balance">100</span></h3>
+<h3>Pool: ₹ <span id="pool">0</span></h3>
 
-<button class="join" onclick="joinContest()">Join Contest ₹10</button>
-<button class="play" onclick="playGame()">Play Quiz</button>
-<button class="withdraw" onclick="withdraw()">Withdraw</button>
+<button class="join" onclick="join()">Join ₹10</button>
+
+<h3 id="question">Loading...</h3>
+
+<button class="tiger" onclick="answer('tiger')">🐯 Tiger</button>
+<button class="dragon" onclick="answer('dragon')">🐉 Dragon</button>
+
 </div>
 
 <script>
 let balance = localStorage.getItem("balance");
 if(balance == null) balance = 100;
+
+let pool = 0;
+
 document.getElementById("balance").innerText = balance;
 
-function joinContest() {
+let correct = "tiger";
+
+function join(){
   if(balance < 10){
     alert("Not enough balance");
   } else {
     balance = parseInt(balance) - 10;
+    pool += 10;
     localStorage.setItem("balance", balance);
     document.getElementById("balance").innerText = balance;
-    alert("Joined Contest!");
+    document.getElementById("pool").innerText = pool;
+    alert("Joined!");
   }
 }
 
-function playGame() {
-  let answer = prompt("2 + 2 = ?");
-  if(answer == "4"){
-    balance = parseInt(balance) + 20;
-    alert("You Won ₹20 🎉");
+function loadQuestion(){
+  document.getElementById("question").innerText = "5 + 3 = ?";
+  correct = "tiger"; // tiger = correct
+}
+
+function answer(choice){
+  if(choice == correct){
+    let win = pool * 0.8; // 80% payout
+    balance = parseInt(balance) + win;
+    alert("You won ₹" + win + " 🎉");
   } else {
-    alert("Wrong Answer ❌");
+    alert("You lost ❌");
   }
+
   localStorage.setItem("balance", balance);
   document.getElementById("balance").innerText = balance;
+
+  pool = 0;
+  document.getElementById("pool").innerText = pool;
+
+  loadQuestion();
 }
 
-function withdraw() {
-  if(balance < 50){
-    alert("Minimum ₹50 required");
-  } else {
-    alert("Withdraw Request Sent 💰");
-  }
-}
+loadQuestion();
 </script>
 
 </body>
