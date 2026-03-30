@@ -155,6 +155,13 @@ function login() {
   } else {
     localStorage.setItem("user", name);
     document.getElementById("loginBox").style.display = "none";
+  }function login() {
+  let name = document.getElementById("name").value;
+  if(name == "") {
+    alert("Enter name");
+  } else {
+    localStorage.setItem("user", name);
+    document.getElementById("loginBox").style.display = "none";
   }
 }
 
