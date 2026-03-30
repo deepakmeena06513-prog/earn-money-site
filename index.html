@@ -4,11 +4,7 @@
   <h2>Login</h2>
   <input type="text" id="name" placeholder="Enter name"><br><br>
   <button onclick="login()">Login</button>
-</div>
-
-<h1>💰 Deepak Earn App</h1>
-<!DOCTYPE html>
-<html>
+</div
 <head>
   <title>Deepak Earn App</title>
   <style>
@@ -135,4 +131,21 @@ function login() {
     localStorage.setItem("user", name);
     document.getElementById("loginBox").style.display = "none";
   }
+}<script>
+function login() {
+  let name = document.getElementById("name").value;
+  if(name == "") {
+    alert("Enter name");
+  } else {
+    localStorage.setItem("user", name);
+    document.getElementById("loginBox").style.display = "none";
+  }
 }
+
+window.onload = function() {
+  let user = localStorage.getItem("user");
+  if(user) {
+    document.getElementById("loginBox").style.display = "none";
+  }
+}
+</script>
