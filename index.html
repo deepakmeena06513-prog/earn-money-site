@@ -82,6 +82,33 @@ function startGame(){
   balance -= 10;
   document.getElementById("balance").innerText = balance;
 
+ <script>
+
+let balance = 150;
+let selected = "";
+
+document.getElementById("balance").innerText = balance;
+
+function select(choice){
+  selected = choice;
+  alert("Selected: " + choice);
+}
+
+function startGame(){
+
+  if(selected == ""){
+    alert("Pehle Tiger ya Dragon select karo");
+    return;
+  }
+
+  if(balance < 10){
+    alert("Balance kam hai");
+    return;
+  }
+
+  balance -= 10;
+  document.getElementById("balance").innerText = balance;
+
   let time = 5;
 
   let timer = setInterval(function(){
@@ -102,7 +129,6 @@ function startGame(){
         alert("😢 You Lose");
       }
 
-      localStorage.setItem(user+"_balance", balance);
       document.getElementById("balance").innerText = balance;
       document.getElementById("status").innerText = "Result: " + result;
 
@@ -111,7 +137,9 @@ function startGame(){
 
   },1000);
 }
+
 </script>
+ 
 
 </body>
 </html>
