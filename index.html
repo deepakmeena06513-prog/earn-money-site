@@ -38,9 +38,15 @@
 <div class="box">
   <h3>Balance: ₹ <span id="balance">100</span></h3>
 
-  <button class="tiger" onclick="play('tiger')">🐯 Tiger</button>
-  <button class="dragon" onclick="play('dragon')">🐉 Dragon</button>
-</div>
+  <button class="tiger" onclick="select('tiger')">🐯 Tiger</button>
+
+<button class="dragon" onclick="select('dragon')">🐉 Dragon</button>
+
+<button onclick="startGame()" style="background:blue;color:white;">
+▶ Start Game
+</button>
+
+<p id="status">Game Ready</p>
 
 <script>
 
