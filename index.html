@@ -157,9 +157,7 @@ let user = localStorage.getItem("user");
 window.onload = function(){
 
 document.getElementById("loginBox").style.display="none";
-  }
-}let user = localStorage.getItem("user");
-let balance = localStorage.getItem(user+"_balance");
+
 
 if(balance == null) balance = 100;
 
@@ -175,6 +173,28 @@ localStorage.setItem(user+"_balance", balance);function login(){
 
 window.onload = function(){
   let user = localStorage.getItem("user");
+  if(user){
+    document.getElementById("loginBox").style.display="none";
+  }
+
+  let balance = localStorage.getItem(user+"_balance");
+
+  if(balance == null) balance = 100;
+
+  localStorage.setItem(user+"_balance", balance);
+}function login(){
+  let user = document.getElementById("user").value;
+  if(user==""){
+    alert("Enter name");
+  } else {
+    localStorage.setItem("user", user);
+    document.getElementById("loginBox").style.display="none";
+  }
+}
+
+window.onload = function(){
+  let user = localStorage.getItem("user");
+
   if(user){
     document.getElementById("loginBox").style.display="none";
   }
