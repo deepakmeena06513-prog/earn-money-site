@@ -1,147 +1,51 @@
-<div id="loginBox">
-  <h3>Login</h3>
-  <input type="text" id="user" placeholder="Enter name"><br><br>
-  <button onclick="login()">Login</button>let balance = localStorage.getItem("balance");let user = localStorage.getItem("user");
-let balance = localStorage.getItem(user+"_balance");
-</div>
 <!DOCTYPE html>
 <html>
 <head>
-<title>Advanced Tiger Game</title>
+<title>Tiger Dragon Game</title>
 <style>
 body {
-  text-align: center;
   font-family: Arial;
+  text-align: center;
   background: linear-gradient(to right, purple, red);
   color: white;
 }
-
 .card {
   background: white;
   color: black;
-  margin: 30px auto;
+  margin: 50px auto;
   padding: 20px;
   border-radius: 15px;
-  width: 300px;
+  width: 80%;
+  max-width: 300px;
 }
-
 button {
   padding: 10px;
-  margin: 10px;
+  margin: 8px;
   width: 90%;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
+  font-size: 16px;
 }
-
-.tiger { background: orange; }
-.dragon { background: green; color: white; }
-.join { background: blue; color: white; }
-
 </style>
 </head>
 
 <body>
 
-<h1>🐯 Tiger vs 🐉 Dragon</h1>
+<div id="loginBox">
+  <h3>Login</h3>
+  <input type="text" id="user" placeholder="Enter name"><br><br>
+  <button onclick="login()">Login</button>
+</div>
+
+<h2>🐯 Tiger vs 🐉 Dragon</h2>
 
 <div class="card">
-<h3>Balance: ₹ <span id="balance">100</span></h3>
-<h3>Pool: ₹ <span id="pool">0</span></h3>
-<h3>Score: <span id="score">0</span></h3>
-<h3>Time: <span id="time">10</span>s</h3>
-
-<button class="join" onclick="join()">Join ₹10</button>
-
-<h3 id="question">Loading...</h3>
-
-<button class="tiger" onclick="answer('tiger')">🐯 Tiger</button>
-<button class="dragon" onclick="answer('dragon')">🐉 Dragon</button>
-
+  <h3>Balance: ₹ <span id="balance">100</span></h3>
+  <button onclick="play('tiger')">🐯 Tiger</button>
+  <button onclick="play('dragon')">🐉 Dragon</button>
 </div>
 
 <script>
-let balance = localStorage.getItem("balance");
-if(balance == null) balance = 100;
-
-let pool = 0;
-let score = 0;
-let time = 10;
-let timer;
-
-document.getElementById("balance").innerText = balance;
-
-let questions = [
-  {q:"5+3=?", ans:"tiger"},
-  {q:"10-5=?", ans:"dragon"},
-  {q:"2+2=?", ans:"tiger"}
-];
-
-let current = 0;
-
-function join(){
-  if(balance < 10){
-    alert("Not enough balance");
-  } else {
-    balance = parseInt(balance) - 10;
-    pool += 10;
-    localStorage.setItem("balance", balance);
-    document.getElementById("balance").innerText = balance;
-    document.getElementById("pool").innerText = pool;
-    startGame();
-  }
-}
-
-function startGame(){
-  score = 0;
-  time = 10;
-  current = 0;
-  loadQuestion();
-  startTimer();
-}
-
-function loadQuestion(){
-  if(current >= questions.length){
-    endGame();
-    return;
-  }
-  document.getElementById("question").innerText = questions[current].q;
-}
-
-function answer(choice){
-  if(choice == questions[current].ans){
-    score++;
-  }
-  current++;
-  loadQuestion();
-}
-
-function startTimer(){
-  timer = setInterval(()=>{
-    time--;
-    document.getElementById("time").innerText = time;
-    if(time <= 0){
-      clearInterval(timer);
-      endGame();
-    }
-  },1000);
-}
-
-function endGame(){
-  let win = pool * 0.8; // 80% payout
-  if(score >= 2){
-    balance = parseInt(balance) + win;
-    alert("You won ₹"+win+" 🎉");
-  } else {
-    alert("You lost ❌");
-  }
-
-  localStorage.setItem("balance", balance);
-  document.getElementById("balance").innerText = balance;
-
-  pool = 0;
-  document.getElementById("pool").innerText = pool;
-  document.getElementById("score").innerText = score;
-}
 function login(){
   let user = document.getElementById("user").value;
   if(user==""){
@@ -149,54 +53,50 @@ function login(){
   } else {
     localStorage.setItem("user", user);
     document.getElementById("loginBox").style.display="none";
-  }
-}}
-
-let user = localStorage.getItem("user");
-
-window.onload = function(){
-
-document.getElementById("loginBox").style.display="none";
-
-
-if(balance == null) balance = 100;
-;function login(){
-  let user = document.getElementById("user").value;
-  if(user==""){
-    alert("Enter name");
-  } else {
-    localStorage.setItem("user", user);
-    document.getElementById("loginBox").style.display="none";
+    loadBalance();
   }
 }
 
-window.onload = function(){
+function loadBalance(){
   let user = localStorage.getItem("user");
-  if(user){
-    document.getElementById("loginBox").style.display="none";
-  };
-
-}function login(){
-  let user = document.getElementById("user").value;
-  if(user==""){
-    alert("Enter name");
-  } else {
-    localStorage.setItem("user", user);
-    document.getElementById("loginBox").style.display="none";
-  }
-}
-
-window.onload = function(){
-  let user = localStorage.getItem("user");
-
-  if(user){
-    document.getElementById("loginBox").style.display="none";
- ;
-
+  let balance = localStorage.getItem(user+"_balance");
   if(balance == null) balance = 100;
+  localStorage.setItem(user+"_balance", balance);
+  document.getElementById("balance").innerText = balance;
+}
+
+function play(choice){
+  let user = localStorage.getItem("user");
+  let balance = parseInt(localStorage.getItem(user+"_balance"));
+
+  if(balance < 10){
+    alert("Low balance");
+    return;
+  }
+
+  balance -= 10;
+
+  let result = Math.random() < 0.5 ? "tiger" : "dragon";
+
+  if(choice == result){
+    balance += 20;
+    alert("You Win 🎉");
+  } else {
+    alert("You Lose 😢");
+  }
 
   localStorage.setItem(user+"_balance", balance);
-}</script>
+  document.getElementById("balance").innerText = balance;
+}
+
+window.onload = function(){
+  let user = localStorage.getItem("user");
+  if(user){
+    document.getElementById("loginBox").style.display="none";
+    loadBalance();
+  }
+}
+</script>
 
 </body>
 </html>
