@@ -42,8 +42,7 @@ button {
 <div class="card">
   <h3>Balance: ₹ <span id="balance">100</span></h3>
   <button onclick="play('tiger')">🐯 Tiger</button>
-  <button onclick="play('dragon')">🐉 Dragon</button>
-</div>
+<button onclick="play('dragon')">🐉 Dragon</button>
 
 <script>
 function login(){
@@ -58,7 +57,26 @@ function login(){
 }
 
 function loadBalance(){
+  let user =function play(choice){
+
   let user = localStorage.getItem("user");
+  let balance = parseInt(localStorage.getItem(user+"_balance"));
+
+  let random = Math.random();
+  let result = (random < 0.5) ? "tiger" : "dragon";
+
+  if(choice === result){
+    balance += 20;
+    alert("🎉 You Win");
+  } else {
+    balance -= 10;
+    alert("😢 You Lose");
+  }
+
+  localStorage.setItem(user+"_balance", balance);
+  document.getElementById("balance").innerText = balance;
+}
+ localStorage.getItem("user");
   let balance = localStorage.getItem(user+"_balance");
   if(balance == null) balance = 100;
   localStorage.setItem(user+"_balance", balance);
