@@ -160,8 +160,7 @@ document.getElementById("loginBox").style.display="none";
 
 
 if(balance == null) balance = 100;
-
-localStorage.setItem(user+"_balance", balance);function login(){
+;function login(){
   let user = document.getElementById("user").value;
   if(user==""){
     alert("Enter name");
@@ -175,13 +174,8 @@ window.onload = function(){
   let user = localStorage.getItem("user");
   if(user){
     document.getElementById("loginBox").style.display="none";
-  }
+  };
 
-  let balance = localStorage.getItem(user+"_balance");
-
-  if(balance == null) balance = 100;
-
-  localStorage.setItem(user+"_balance", balance);
 }function login(){
   let user = document.getElementById("user").value;
   if(user==""){
