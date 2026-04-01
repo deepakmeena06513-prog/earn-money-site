@@ -1,34 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Tiger vs Dragon</title>
-  <style>
-    body {
-      font-family: Arial;
-      text-align: center;
-      background: linear-gradient(to right, purple, red);
-      color: white;
-    }
-    .box {
-      background: white;
-      color: black;
-      padding: 20px;
-      border-radius: 15px;
-      width: 250px;
-      margin: 50px auto;
-    }
-    button {
-      width: 100%;
-      padding: 12px;
-      margin: 8px 0;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    .tiger { background: orange; color: white; }
-    .dragon { background: green; color: white; }
-  </style>
+<title>Tiger vs Dragon</title>
+<style>
+body{
+  font-family: Arial;
+  text-align:center;
+  background: linear-gradient(to right, purple, red);
+  color:white;
+}
+.box{
+  background:white;
+  color:black;
+  width:250px;
+  margin:auto;
+  padding:20px;
+  border-radius:10px;
+}
+button{
+  width:100%;
+  padding:10px;
+  margin:5px;
+  border:none;
+  border-radius:5px;
+  font-size:16px;
+}
+.tiger{background:orange;}
+.dragon{background:green;color:white;}
+.start{background:blue;color:white;}
+</style>
 </head>
 
 <body>
@@ -39,23 +39,17 @@
   <h3>Balance: ₹ <span id="balance">100</span></h3>
 
   <button class="tiger" onclick="select('tiger')">🐯 Tiger</button>
+  <button class="dragon" onclick="select('dragon')">🐉 Dragon</button>
 
-<button class="dragon" onclick="select('dragon')">🐉 Dragon</button>
+  <button class="start" onclick="startGame()">▶ Start Game</button>
 
-<button onclick="startGame()" style="background:blue;color:white;">
-▶ Start Game
-</button>
-
-<p id="status">Game Ready</p>
-
-<script>
+  <p id="status">Game Ready</p>
+</div>
 
 <script>
 
 let balance = 100;
 let selected = "";
-
-document.getElementById("balance").innerText = balance;
 
 function select(choice){
   selected = choice;
@@ -108,71 +102,5 @@ function startGame(){
 
 </script>
 
-
-
-let balance = 150;
-let selected = "";
-
-document.getElementById("balance").innerText = balance;
-
-function select(choice){
-  selected = choice;
-  alert("Selected: " + choice);
-}
-
-function startGame(){
-
-  if(selected == ""){
-    alert("Pehle Tiger ya Dragon select karo");
-    return;
-  }
-
-  if(balance < 10){
-    alert("Balance kam hai");
-    return;
-  }
-
-  balance -= 10;
-  document.getElementById("balance").innerText = balance;
-
-  let time = 5;
-
-  let timer = setInterval(function(){
-
-    document.getElementById("status").innerText = "Time: " + time;
-
-    time--;
-
-    if(time < 0){
-      clearInterval(timer);
-
-      let result = Math.random() < 0.5 ? "tiger" : "dragon";
-
-      if(selected === result){
-        balance += 20;
-        alert("🎉 You Win");
-      } else {
-        alert("😢 You Lose");
-      }
-
-      document.getElementById("balance").innerText = balance;
-      document.getElementById("status").innerText = "Result: " + result;
-
-      selected = "";
-    }
-
-  },1000);
-}
-
-</script>
- 
-
 </body>
-</html><h3>Balance: ₹ <span id="balance">100</span></h3>
-
-<button onclick="select('tiger')">🐯 Tiger</button>
-<button onclick="select('dragon')">🐉 Dragon</button>
-
-<button onclick="startGame()">▶ Start Game</button>
-
-<p id="status">Game Ready</p>
+</html>
