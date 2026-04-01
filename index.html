@@ -4,16 +4,13 @@
 <title>Tiger vs Dragon</title>
 
 <style>
-body{<div id="loginBox">
-  <h3>Login</h3>
-  <input type="text" id="username" placeholder="Enter name"><br><br>
-  <button onclick="login()">Login</button>
-</div>
+body{
   font-family: Arial;
-  text-align:center;
+  text-align: center;
   background: linear-gradient(to right, purple, red);
   color:white;
 }
+
 .box{
   background:white;
   color:black;
@@ -22,6 +19,7 @@ body{<div id="loginBox">
   padding:20px;
   border-radius:10px;
 }
+
 button{
   width:100%;
   padding:10px;
@@ -30,6 +28,7 @@ button{
   border-radius:5px;
   font-size:16px;
 }
+
 .tiger{background:orange;}
 .dragon{background:green;color:white;}
 .start{background:blue;color:white;}
@@ -39,11 +38,20 @@ button{
 
 <body>
 
+<!-- LOGIN -->
+<div id="loginBox">
+  <h3>Login</h3>
+  <input type="text" id="username" placeholder="Enter name"><br><br>
+  <button onclick="login()">Login</button>
+</div>
+
+<p id="welcome"></p>
+
 <h2>🐯 Tiger vs 🐉 Dragon</h2>
 
 <div class="box">
 
-<h3>Balance: ₹ <span id="balance">100</span></h3>
+<h3>Balance: ₹<span id="balance">100</span></h3>
 
 <button class="tiger" onclick="select('tiger')">🐯 Tiger</button>
 <button class="dragon" onclick="select('dragon')">🐉 Dragon</button>
@@ -56,25 +64,65 @@ button{
 
 <script>
 
-let user = "demo";
+let user = "";
 let balance = 100;
 let selected = "";
-<p id="welcome"></p>
-// Load balance
-if(localStorage.getItem(user+"_balance")){
-  balance = parseInt(localStorage.getItem(user+"_balance"));
-}
-document.getElementById("balance").innerText = balance;
 
+// LOGIN
+function login(){
+  let name = document.getElementById("username").value;
+
+  if(name == ""){
+    alert("Name dalna zaruri hai");
+    return;
+  }
+
+  localStorage.setItem("user", name);
+  user = name;
+
+  document.getElementById("loginBox").style.display = "none";
+  document.getElementById("welcome").innerText = "Welcome " + user;
+
+  loadBalance();
+}
+
+// PAGE LOAD
+window.onload = function(){
+  let savedUser = localStorage.getItem("user");
+
+  if(savedUser){
+    user = savedUser;
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("welcome").innerText = "Welcome " + user;
+
+    loadBalance();
+  }
+}
+
+// LOAD BALANCE
+function loadBalance(){
+  let savedBalance = localStorage.getItem(user+"_balance");
+
+  if(savedBalance == null){
+    balance = 100;
+  } else {
+    balance = parseInt(savedBalance);
+  }
+
+  document.getElementById("balance").innerText = balance;
+}
+
+// SELECT
 function select(choice){
   selected = choice;
   alert("Selected: " + choice);
 }
 
+// START GAME
 function startGame(){
 
-  if(selected === ""){
-    alert("Pehle Tiger ya Dragon select karo");
+  if(selected == ""){
+    alert("Pehle select karo");
     return;
   }
 
@@ -83,7 +131,7 @@ function startGame(){
     return;
   }
 
-  balance -= 10;localStorage.setItem(user+"_balance", balance);
+  balance -= 10;
   document.getElementById("balance").innerText = balance;
 
   let time = 5;
@@ -99,7 +147,7 @@ function startGame(){
 
       let result = Math.random() < 0.5 ? "tiger" : "dragon";
 
-      if(selected === result){
+      if(selected == result){
         balance += 20;
         alert("🎉 You Win");
       } else {
@@ -116,35 +164,7 @@ function startGame(){
 
   },1000);
 }
-let user = localStorage.getItem("user");
 
-function login(){
-  let name = document.getElementById("username").value;
-
-  if(name == ""){
-    alert("Name dalna zaruri hai");
-    return;
-  }
-
-  localStorage.setItem("user", name);
-  user = name;
-
-  document.getElementById("loginBox").style.display = "none";
-  document.getElementById("welcome").innerText = "Welcome " + user;
-
-  loadBalance();
-}window.onload = function(){
-
-  let savedUser = localStorage.getItem("user");
-
-  if(savedUser){
-    user = savedUser;
-    document.getElementById("loginBox").style.display = "none";
-    document.getElementById("welcome").innerText = "Welcome " + user;
-
-    loadBalance();
-  }
-}
 </script>
 
 </body>
