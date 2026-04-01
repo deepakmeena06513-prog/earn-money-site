@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pro Tiger Dragon</title>
+<title>Tiger Dragon Pro</title>
 
 <style>
 body{
@@ -33,7 +33,6 @@ button{
   margin:5px;
   border:none;
   border-radius:5px;
-  font-size:16px;
 }
 
 .tiger{background:orange;}
@@ -86,7 +85,7 @@ button{
 
 <input id="bet" placeholder="Enter Bet ₹">
 
-<!-- Cards -->
+<!-- CARDS -->
 <div>
   <div class="card">
     <div class="inner" id="card1">
@@ -115,14 +114,14 @@ button{
 
 </div>
 
-<!-- Login -->
+<!-- LOGIN -->
 <div id="loginBox">
   <h3>Login</h3>
   <input type="text" id="username" placeholder="Enter Name">
   <button onclick="login()">Login</button>
 </div>
 
-<!-- Sound -->
+<!-- SOUND -->
 <audio id="winSound" src="https://www.soundjay.com/button/beep-07.wav"></audio>
 <audio id="loseSound" src="https://www.soundjay.com/button/beep-10.wav"></audio>
 
@@ -194,6 +193,7 @@ function startGame(){
     if(time < 0){
       clearInterval(timer);
 
+      // FLIP
       c1.classList.add("flip");
       c2.classList.add("flip");
 
@@ -215,6 +215,7 @@ function startGame(){
 
         localStorage.setItem(user+"_balance", balance);
 
+        // RESET CARD
         c1.classList.remove("flip");
         c2.classList.remove("flip");
 
