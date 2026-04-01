@@ -14,7 +14,7 @@ body{
 .box{
   background:white;
   color:black;
-  width:250px;
+  width:260px;
   margin:auto;
   padding:20px;
   border-radius:10px;
@@ -29,11 +29,18 @@ button{
   font-size:16px;
 }
 
+input{
+  width:100%;
+  padding:8px;
+  margin:5px;
+}
+
 .tiger{background:orange;}
 .dragon{background:green;color:white;}
 .start{background:blue;color:white;}
 .add{background:purple;color:white;}
 .withdraw{background:red;color:white;}
+.logout{background:black;color:white;}
 </style>
 
 </head>
@@ -43,7 +50,7 @@ button{
 <!-- LOGIN -->
 <div id="loginBox">
   <h3>Login</h3>
-  <input type="text" id="username" placeholder="Enter name"><br><br>
+  <input type="text" id="username" placeholder="Enter name"><br>
   <button onclick="login()">Login</button>
 </div>
 
@@ -55,6 +62,8 @@ button{
 
 <h3>Balance: ₹<span id="balance">100</span></h3>
 
+<input type="number" id="bet" placeholder="Enter Bet ₹">
+
 <button class="tiger" onclick="select('tiger')">🐯 Tiger</button>
 <button class="dragon" onclick="select('dragon')">🐉 Dragon</button>
 
@@ -62,8 +71,11 @@ button{
 
 <button class="add" onclick="addMoney()">💰 Add Money</button>
 <button class="withdraw" onclick="withdraw()">💸 Withdraw</button>
+<button class="logout" onclick="logout()">🚪 Logout</button>
 
 <p id="status">Game Ready</p>
+
+<p id="history"></p>
 
 </div>
 
@@ -72,6 +84,7 @@ button{
 let user = "";
 let balance = 100;
 let selected = "";
+let history = "";
 
 // LOGIN
 function login(){
@@ -126,17 +139,24 @@ function select(choice){
 // GAME
 function startGame(){
 
+  let bet = parseInt(document.getElementById("bet").value);
+
+  if(!bet || bet <= 0){
+    alert("Bet dalo");
+    return;
+  }
+
   if(selected == ""){
     alert("Pehle select karo");
     return;
   }
 
-  if(balance < 10){
+  if(balance < bet){
     alert("Balance kam hai");
     return;
   }
 
-  balance -= 10;
+  balance -= bet;
   document.getElementById("balance").innerText = balance;
 
   let time = 5;
@@ -153,7 +173,7 @@ function startGame(){
       let result = Math.random() < 0.5 ? "tiger" : "dragon";
 
       if(selected == result){
-        balance += 20;
+        balance += bet * 2;
         alert("🎉 You Win");
       } else {
         alert("😢 You Lose");
@@ -164,6 +184,9 @@ function startGame(){
       document.getElementById("balance").innerText = balance;
       document.getElementById("status").innerText = "Result: " + result;
 
+      history += result + " | ";
+      document.getElementById("history").innerText = "History: " + history;
+
       selected = "";
     }
 
@@ -173,23 +196,20 @@ function startGame(){
 // ADD MONEY
 function addMoney(){
   let amount = prompt("Kitna paisa add karna hai?");
-
-  if(amount == null || amount == "") return;
+  if(!amount) return;
 
   amount = parseInt(amount);
 
   balance += amount;
 
   localStorage.setItem(user+"_balance", balance);
-
   document.getElementById("balance").innerText = balance;
 }
 
 // WITHDRAW
 function withdraw(){
   let amount = prompt("Kitna nikalna hai?");
-
-  if(amount == null || amount == "") return;
+  if(!amount) return;
 
   amount = parseInt(amount);
 
@@ -201,10 +221,15 @@ function withdraw(){
   balance -= amount;
 
   localStorage.setItem(user+"_balance", balance);
-
   document.getElementById("balance").innerText = balance;
 
   alert("Withdraw request sent ✅");
+}
+
+// LOGOUT
+function logout(){
+  localStorage.removeItem("user");
+  location.reload();
 }
 
 </script>
