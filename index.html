@@ -32,6 +32,8 @@ button{
 .tiger{background:orange;}
 .dragon{background:green;color:white;}
 .start{background:blue;color:white;}
+.add{background:purple;color:white;}
+.withdraw{background:red;color:white;}
 </style>
 
 </head>
@@ -57,6 +59,9 @@ button{
 <button class="dragon" onclick="select('dragon')">🐉 Dragon</button>
 
 <button class="start" onclick="startGame()">▶ Start Game</button>
+
+<button class="add" onclick="addMoney()">💰 Add Money</button>
+<button class="withdraw" onclick="withdraw()">💸 Withdraw</button>
 
 <p id="status">Game Ready</p>
 
@@ -118,7 +123,7 @@ function select(choice){
   alert("Selected: " + choice);
 }
 
-// START GAME
+// GAME
 function startGame(){
 
   if(selected == ""){
@@ -163,6 +168,43 @@ function startGame(){
     }
 
   },1000);
+}
+
+// ADD MONEY
+function addMoney(){
+  let amount = prompt("Kitna paisa add karna hai?");
+
+  if(amount == null || amount == "") return;
+
+  amount = parseInt(amount);
+
+  balance += amount;
+
+  localStorage.setItem(user+"_balance", balance);
+
+  document.getElementById("balance").innerText = balance;
+}
+
+// WITHDRAW
+function withdraw(){
+  let amount = prompt("Kitna nikalna hai?");
+
+  if(amount == null || amount == "") return;
+
+  amount = parseInt(amount);
+
+  if(amount > balance){
+    alert("Balance kam hai");
+    return;
+  }
+
+  balance -= amount;
+
+  localStorage.setItem(user+"_balance", balance);
+
+  document.getElementById("balance").innerText = balance;
+
+  alert("Withdraw request sent ✅");
 }
 
 </script>
