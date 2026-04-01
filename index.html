@@ -50,17 +50,12 @@
 
 <script>
 
-let user = "demo"; // simple user
-let balance = localStorage.getItem(user+"_balance");
+<script>
 
-if(balance == null){
-  balance = 100;
-  localStorage.setItem(user+"_balance", balance);
-}
-
-balance = parseInt(balance);
-document.getElementById("balance").innerText = balance;
+let balance = 100;
 let selected = "";
+
+document.getElementById("balance").innerText = balance;
 
 function select(choice){
   selected = choice;
@@ -69,8 +64,8 @@ function select(choice){
 
 function startGame(){
 
-  if(selected == ""){
-    alert("Pehle select karo");
+  if(selected === ""){
+    alert("Pehle Tiger ya Dragon select karo");
     return;
   }
 
@@ -82,7 +77,38 @@ function startGame(){
   balance -= 10;
   document.getElementById("balance").innerText = balance;
 
- <script>
+  let time = 5;
+
+  let timer = setInterval(function(){
+
+    document.getElementById("status").innerText = "Time: " + time;
+
+    time--;
+
+    if(time < 0){
+      clearInterval(timer);
+
+      let result = Math.random() < 0.5 ? "tiger" : "dragon";
+
+      if(selected === result){
+        balance += 20;
+        alert("🎉 You Win");
+      } else {
+        alert("😢 You Lose");
+      }
+
+      document.getElementById("balance").innerText = balance;
+      document.getElementById("status").innerText = "Result: " + result;
+
+      selected = "";
+    }
+
+  },1000);
+}
+
+</script>
+
+
 
 let balance = 150;
 let selected = "";
