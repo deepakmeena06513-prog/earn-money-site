@@ -4,7 +4,11 @@
 <title>Tiger vs Dragon</title>
 
 <style>
-body{
+body{<div id="loginBox">
+  <h3>Login</h3>
+  <input type="text" id="username" placeholder="Enter name"><br><br>
+  <button onclick="login()">Login</button>
+</div>
   font-family: Arial;
   text-align:center;
   background: linear-gradient(to right, purple, red);
@@ -55,7 +59,7 @@ button{
 let user = "demo";
 let balance = 100;
 let selected = "";
-
+<p id="welcome"></p>
 // Load balance
 if(localStorage.getItem(user+"_balance")){
   balance = parseInt(localStorage.getItem(user+"_balance"));
@@ -79,7 +83,7 @@ function startGame(){
     return;
   }
 
-  balance -= 10;
+  balance -= 10;localStorage.setItem(user+"_balance", balance);
   document.getElementById("balance").innerText = balance;
 
   let time = 5;
@@ -112,7 +116,35 @@ function startGame(){
 
   },1000);
 }
+let user = localStorage.getItem("user");
 
+function login(){
+  let name = document.getElementById("username").value;
+
+  if(name == ""){
+    alert("Name dalna zaruri hai");
+    return;
+  }
+
+  localStorage.setItem("user", name);
+  user = name;
+
+  document.getElementById("loginBox").style.display = "none";
+  document.getElementById("welcome").innerText = "Welcome " + user;
+
+  loadBalance();
+}window.onload = function(){
+
+  let savedUser = localStorage.getItem("user");
+
+  if(savedUser){
+    user = savedUser;
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("welcome").innerText = "Welcome " + user;
+
+    loadBalance();
+  }
+}
 </script>
 
 </body>
