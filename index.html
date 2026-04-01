@@ -2,6 +2,7 @@
 <html>
 <head>
 <title>Tiger vs Dragon</title>
+
 <style>
 body{
   font-family: Arial;
@@ -29,6 +30,7 @@ button{
 .dragon{background:green;color:white;}
 .start{background:blue;color:white;}
 </style>
+
 </head>
 
 <body>
@@ -36,20 +38,29 @@ button{
 <h2>🐯 Tiger vs 🐉 Dragon</h2>
 
 <div class="box">
-  <h3>Balance: ₹ <span id="balance">100</span></h3>
 
-  <button class="tiger" onclick="select('tiger')">🐯 Tiger</button>
-  <button class="dragon" onclick="select('dragon')">🐉 Dragon</button>
+<h3>Balance: ₹ <span id="balance">100</span></h3>
 
-  <button class="start" onclick="startGame()">▶ Start Game</button>
+<button class="tiger" onclick="select('tiger')">🐯 Tiger</button>
+<button class="dragon" onclick="select('dragon')">🐉 Dragon</button>
 
-  <p id="status">Game Ready</p>
+<button class="start" onclick="startGame()">▶ Start Game</button>
+
+<p id="status">Game Ready</p>
+
 </div>
 
 <script>
 
+let user = "demo";
 let balance = 100;
 let selected = "";
+
+// Load balance
+if(localStorage.getItem(user+"_balance")){
+  balance = parseInt(localStorage.getItem(user+"_balance"));
+}
+document.getElementById("balance").innerText = balance;
 
 function select(choice){
   selected = choice;
@@ -90,6 +101,8 @@ function startGame(){
       } else {
         alert("😢 You Lose");
       }
+
+      localStorage.setItem(user+"_balance", balance);
 
       document.getElementById("balance").innerText = balance;
       document.getElementById("status").innerText = "Result: " + result;
