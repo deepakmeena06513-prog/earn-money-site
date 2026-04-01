@@ -1,23 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Tiger vs Dragon</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pro Tiger Dragon</title>
 
 <style>
 body{
-  font-family: Arial;
-  text-align: center;
-  background: linear-gradient(to right, purple, red);
+  font-family:Arial;
+  text-align:center;
+  background:linear-gradient(to right, purple, red);
   color:white;
 }
 
 .box{
   background:white;
   color:black;
-  width:260px;
+  width:300px;
   margin:auto;
   padding:20px;
-  border-radius:10px;
+  border-radius:15px;
+}
+
+input{
+  width:100%;
+  padding:10px;
+  margin:5px;
 }
 
 button{
@@ -29,165 +36,191 @@ button{
   font-size:16px;
 }
 
-input{
-  width:100%;
-  padding:8px;
-  margin:5px;
-}
-
 .tiger{background:orange;}
 .dragon{background:green;color:white;}
 .start{background:blue;color:white;}
 .add{background:purple;color:white;}
 .withdraw{background:red;color:white;}
 .logout{background:black;color:white;}
-</style>
 
+.card{
+  width:80px;
+  height:120px;
+  display:inline-block;
+  perspective:1000px;
+}
+
+.inner{
+  width:100%;
+  height:100%;
+  position:relative;
+  transform-style:preserve-3d;
+  transition:1s;
+}
+
+.flip{
+  transform:rotateY(180deg);
+}
+
+.front, .back{
+  position:absolute;
+  width:80px;
+  height:120px;
+  line-height:120px;
+  border-radius:10px;
+}
+
+.front{background:black;color:white;}
+.back{background:white;color:black;transform:rotateY(180deg);}
+</style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
-<div id="loginBox">
-  <h3>Login</h3>
-  <input type="text" id="username" placeholder="Enter name"><br>
-  <button onclick="login()">Login</button>
-</div>
-
-<p id="welcome"></p>
-
+<h3 id="welcome"></h3>
 <h2>🐯 Tiger vs 🐉 Dragon</h2>
 
 <div class="box">
 
 <h3>Balance: ₹<span id="balance">100</span></h3>
 
-<input type="number" id="bet" placeholder="Enter Bet ₹">
+<input id="bet" placeholder="Enter Bet ₹">
+
+<!-- Cards -->
+<div>
+  <div class="card">
+    <div class="inner" id="card1">
+      <div class="front">🂠</div>
+      <div class="back">🐯</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="inner" id="card2">
+      <div class="front">🂠</div>
+      <div class="back">🐉</div>
+    </div>
+  </div>
+</div>
 
 <button class="tiger" onclick="select('tiger')">🐯 Tiger</button>
 <button class="dragon" onclick="select('dragon')">🐉 Dragon</button>
 
 <button class="start" onclick="startGame()">▶ Start Game</button>
-
 <button class="add" onclick="addMoney()">💰 Add Money</button>
 <button class="withdraw" onclick="withdraw()">💸 Withdraw</button>
 <button class="logout" onclick="logout()">🚪 Logout</button>
 
 <p id="status">Game Ready</p>
 
-<p id="history"></p>
-
 </div>
+
+<!-- Login -->
+<div id="loginBox">
+  <h3>Login</h3>
+  <input type="text" id="username" placeholder="Enter Name">
+  <button onclick="login()">Login</button>
+</div>
+
+<!-- Sound -->
+<audio id="winSound" src="https://www.soundjay.com/button/beep-07.wav"></audio>
+<audio id="loseSound" src="https://www.soundjay.com/button/beep-10.wav"></audio>
 
 <script>
 
-let user = "";
 let balance = 100;
 let selected = "";
-let history = "";
+let user = "";
 
 // LOGIN
 function login(){
   let name = document.getElementById("username").value;
-
-  if(name == ""){
-    alert("Name dalna zaruri hai");
-    return;
-  }
+  if(name==""){ alert("Name dalo"); return; }
 
   localStorage.setItem("user", name);
   user = name;
 
-  document.getElementById("loginBox").style.display = "none";
-  document.getElementById("welcome").innerText = "Welcome " + user;
+  document.getElementById("loginBox").style.display="none";
+  document.getElementById("welcome").innerText="Welcome " + user;
 
   loadBalance();
 }
 
-// PAGE LOAD
-window.onload = function(){
-  let savedUser = localStorage.getItem("user");
-
-  if(savedUser){
-    user = savedUser;
-    document.getElementById("loginBox").style.display = "none";
-    document.getElementById("welcome").innerText = "Welcome " + user;
-
+// AUTO LOGIN
+window.onload=function(){
+  let saved = localStorage.getItem("user");
+  if(saved){
+    user = saved;
+    document.getElementById("loginBox").style.display="none";
+    document.getElementById("welcome").innerText="Welcome " + user;
     loadBalance();
   }
 }
 
 // LOAD BALANCE
 function loadBalance(){
-  let savedBalance = localStorage.getItem(user+"_balance");
-
-  if(savedBalance == null){
-    balance = 100;
-  } else {
-    balance = parseInt(savedBalance);
+  let saved = localStorage.getItem(user+"_balance");
+  if(saved){
+    balance = parseInt(saved);
   }
-
   document.getElementById("balance").innerText = balance;
 }
 
 // SELECT
 function select(choice){
   selected = choice;
-  alert("Selected: " + choice);
 }
 
-// GAME
+// START GAME
 function startGame(){
 
   let bet = parseInt(document.getElementById("bet").value);
 
-  if(!bet || bet <= 0){
-    alert("Bet dalo");
-    return;
-  }
-
-  if(selected == ""){
-    alert("Pehle select karo");
-    return;
-  }
-
-  if(balance < bet){
-    alert("Balance kam hai");
-    return;
-  }
+  if(!bet || bet<=0){ alert("Bet dalo"); return; }
+  if(selected==""){ alert("Select karo"); return; }
+  if(balance < bet){ alert("Balance kam hai"); return; }
 
   balance -= bet;
   document.getElementById("balance").innerText = balance;
 
-  let time = 5;
+  let c1 = document.getElementById("card1");
+  let c2 = document.getElementById("card2");
 
+  let time = 3;
   let timer = setInterval(function(){
-
-    document.getElementById("status").innerText = "Time: " + time;
-
+    document.getElementById("status").innerText="Time: "+time;
     time--;
 
     if(time < 0){
       clearInterval(timer);
 
-      let result = Math.random() < 0.5 ? "tiger" : "dragon";
+      c1.classList.add("flip");
+      c2.classList.add("flip");
 
-      if(selected == result){
-        balance += bet * 2;
-        alert("🎉 You Win");
-      } else {
-        alert("😢 You Lose");
-      }
+      let result = Math.random()<0.5 ? "tiger":"dragon";
 
-      localStorage.setItem(user+"_balance", balance);
+      setTimeout(()=>{
 
-      document.getElementById("balance").innerText = balance;
-      document.getElementById("status").innerText = "Result: " + result;
+        if(selected === result){
+          balance += bet*2;
+          document.getElementById("winSound").play();
+          alert("You Win 🎉");
+        } else {
+          document.getElementById("loseSound").play();
+          alert("You Lose 😢");
+        }
 
-      history += result + " | ";
-      document.getElementById("history").innerText = "History: " + history;
+        document.getElementById("balance").innerText = balance;
+        document.getElementById("status").innerText="Result: "+result;
 
-      selected = "";
+        localStorage.setItem(user+"_balance", balance);
+
+        c1.classList.remove("flip");
+        c2.classList.remove("flip");
+
+        selected="";
+
+      },2000);
     }
 
   },1000);
@@ -195,35 +228,22 @@ function startGame(){
 
 // ADD MONEY
 function addMoney(){
-  let amount = prompt("Kitna paisa add karna hai?");
-  if(!amount) return;
-
-  amount = parseInt(amount);
-
-  balance += amount;
-
-  localStorage.setItem(user+"_balance", balance);
-  document.getElementById("balance").innerText = balance;
+  let amt = prompt("Kitna add karna?");
+  if(amt){
+    balance += parseInt(amt);
+    localStorage.setItem(user+"_balance", balance);
+    document.getElementById("balance").innerText = balance;
+  }
 }
 
 // WITHDRAW
 function withdraw(){
-  let amount = prompt("Kitna nikalna hai?");
-  if(!amount) return;
-
-  amount = parseInt(amount);
-
-  if(amount > balance){
-    alert("Balance kam hai");
-    return;
+  let amt = prompt("Kitna nikalna?");
+  if(amt && amt <= balance){
+    balance -= parseInt(amt);
+    localStorage.setItem(user+"_balance", balance);
+    document.getElementById("balance").innerText = balance;
   }
-
-  balance -= amount;
-
-  localStorage.setItem(user+"_balance", balance);
-  document.getElementById("balance").innerText = balance;
-
-  alert("Withdraw request sent ✅");
 }
 
 // LOGOUT
