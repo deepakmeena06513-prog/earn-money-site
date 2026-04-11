@@ -1,176 +1,115 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Tiger vs Dragon</title>
+  <title>Tiger Dragon Game</title>
 
-<style>
-body{
-  font-family: Arial;
-  text-align:center;
-  background: linear-gradient(to right, purple, red);
-  color:white;
-}
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 
-.box{
-  background:white;
-  color:black;
-  width:280px;
-  margin:auto;
-  padding:20px;
-  border-radius:10px;
-}
-
-button{
-  width:100%;
-  padding:10px;
-  margin:5px;
-  border:none;
-  border-radius:5px;
-  font-size:16px;
-}
-
-.tiger{background:orange;}
-.dragon{background:green;color:white;}
-.start{background:blue;color:white;}
-.ad{background:purple;color:white;}
-.logout{background:black;color:white;}
-</style>
+  <style>
+    body{
+      text-align:center;
+      background: linear-gradient(red, purple);
+      color:white;
+      font-family:Arial;
+    }
+    input, button{
+      padding:10px;
+      margin:5px;
+      width:80%;
+      border-radius:5px;
+      border:none;
+    }
+    button{
+      background:blue;
+      color:white;
+    }
+  </style>
 </head>
 
 <body>
 
-<h3 id="welcome"></h3>
+<h2>📱 OTP Login</h2>
 
-<h2>🐯 Tiger vs 🐉 Dragon</h2>
+<input type="text" id="phone" placeholder="Enter Mobile Number">
+<div id="recaptcha"></div>
 
-<div id="loginBox">
-  <h3>Login</h3>
-  <input type="text" id="username" placeholder="Enter name"><br><br>
-  <button onclick="login()">Login</button>
-</div>
+<button onclick="sendOTP()">Send OTP</button>
 
-<div class="box" id="gameBox" style="display:none;">
+<br><br>
 
-<h3>Coins: 🪙 <span id="balance">100</span></h3>
+<input type="text" id="otp" placeholder="Enter OTP">
+<button onclick="verifyOTP()">Verify OTP</button>
 
-<input type="number" id="bet" placeholder="Enter Bet Coins"><br><br>
+<hr>
 
-<button class="tiger" onclick="select('tiger')">🐯 Tiger</button>
-<button class="dragon" onclick="select('dragon')">🐉 Dragon</button>
+<div id="game" style="display:none;">
+  <h2>🐯 Tiger vs 🐉 Dragon</h2>
+  <h3>Coins: <span id="balance">100</span></h3>
 
-<button class="start" onclick="startGame()">▶ Start Game</button>
+  <button onclick="playGame('tiger')">Tiger</button>
+  <button onclick="playGame('dragon')">Dragon</button>
 
-<button class="ad" onclick="earnCoins()">🎥 Watch Ad → +20 Coins</button>
-
-<button class="logout" onclick="logout()">🚪 Logout</button>
-
-<p id="status">Game Ready</p>
-
+  <h3 id="result"></h3>
 </div>
 
 <script>
 
-let user = "";
+// 🔥 Firebase Config (यह बदलना जरूरी है)
+var firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT",
+};
+
+firebase.initializeApp(firebaseConfig);
+
+let confirmationResult;
 let balance = 100;
-let selected = "";
 
-// LOGIN
-function login(){
-  let name = document.getElementById("username").value;
+// 📲 Send OTP
+function sendOTP(){
+  let phone = "+91" + document.getElementById("phone").value;
 
-  if(name == ""){
-    alert("Name dalna zaruri hai");
-    return;
-  }
+  let appVerifier = new firebase.auth.RecaptchaVerifier('recaptcha');
 
-  user = name;
-  localStorage.setItem("user", user);
-
-  document.getElementById("loginBox").style.display="none";
-  document.getElementById("gameBox").style.display="block";
-  document.getElementById("welcome").innerText="Welcome " + user;
-
-  loadBalance();
+  firebase.auth().signInWithPhoneNumber(phone, appVerifier)
+  .then((result)=>{
+    confirmationResult = result;
+    alert("OTP Sent 📩");
+  }).catch((error)=>{
+    alert(error.message);
+  });
 }
 
-// LOAD BALANCE
-function loadBalance(){
-  if(localStorage.getItem(user+"_balance")){
-    balance = parseInt(localStorage.getItem(user+"_balance"));
-  }
-  document.getElementById("balance").innerText = balance;
+// ✅ Verify OTP
+function verifyOTP(){
+  let code = document.getElementById("otp").value;
+
+  confirmationResult.confirm(code)
+  .then(()=>{
+    alert("Login Success ✅");
+
+    document.getElementById("game").style.display = "block";
+  }).catch(()=>{
+    alert("Wrong OTP ❌");
+  });
 }
 
-// SELECT
-function select(choice){
-  selected = choice;
-  alert("Selected: " + choice);
-}
-
-// START GAME
-function startGame(){
-
-  let bet = parseInt(document.getElementById("bet").value);
-
-  if(selected == ""){
-    alert("Pehle select karo");
-    return;
-  }
-
-  if(isNaN(bet) || bet <= 0){
-    alert("Bet dalna zaruri hai");
-    return;
-  }
-
-  if(balance < bet){
-    alert("Coins kam hai");
-    return;
-  }
-
-  balance -= bet;
-
+// 🎮 Game Logic
+function playGame(choice){
   let result = Math.random() < 0.5 ? "tiger" : "dragon";
 
-  if(selected == result){
-    balance += bet * 2;
-    alert("🎉 You Win");
-  } else {
-    alert("😢 You Lose");
+  if(choice == result){
+    balance += 10;
+    document.getElementById("result").innerText = "🎉 You Win!";
+  }else{
+    balance -= 10;
+    document.getElementById("result").innerText = "😢 You Lose!";
   }
 
-  localStorage.setItem(user+"_balance", balance);
-
   document.getElementById("balance").innerText = balance;
-  document.getElementById("status").innerText = "Result: " + result;
-
-  selected = "";
-}
-
-// 🎥 EARN COINS (Ad Simulation)
-function earnCoins(){
-  alert("Ad dekh liya 🎥 +20 Coins");
-  balance += 20;
-  localStorage.setItem(user+"_balance", balance);
-  document.getElementById("balance").innerText = balance;
-}
-
-// LOGOUT
-function logout(){
-  localStorage.removeItem("user");
-  location.reload();
-}
-
-// AUTO LOGIN
-window.onload = function(){
-  let savedUser = localStorage.getItem("user");
-
-  if(savedUser){
-    user = savedUser;
-    document.getElementById("loginBox").style.display="none";
-    document.getElementById("gameBox").style.display="block";
-    document.getElementById("welcome").innerText="Welcome " + user;
-    loadBalance();
-  }
 }
 
 </script>
