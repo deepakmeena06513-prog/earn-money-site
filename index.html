@@ -1,82 +1,110 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Tiger Dragon Game</title>
-  <style>
-    body{
-      margin:0;
-      font-family: Arial;
-      background: linear-gradient(to right, red, purple);
-      color:white;
-      text-align:center;
-    }
-    .box{
-      margin-top:50px;
-    }
-    input{
-      padding:10px;
-      width:80%;
-      margin:10px;
-    }
-    button{
-      padding:12px;
-      width:80%;
-      margin:10px;
-      border:none;
-      color:white;
-      font-size:16px;
-    }
-    .btn{background:blue;}
-  </style>
+<title>Tiger Dragon Game</title>
+
+<style>
+body{
+  margin:0;
+  font-family: Arial;
+  background: linear-gradient(to right, red, purple);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  color:white;
+}
+
+.container{
+  width:90%;
+  max-width:400px;
+  background:rgba(255,255,255,0.1);
+  padding:20px;
+  border-radius:15px;
+  text-align:center;
+}
+
+input{
+  width:90%;
+  padding:10px;
+  margin:10px;
+}
+
+button{
+  width:90%;
+  padding:15px;
+  margin:10px;
+  border:none;
+  border-radius:10px;
+  color:white;
+  font-size:18px;
+}
+
+.tiger{ background:orange; }
+.dragon{ background:green; }
+
+</style>
 </head>
 
 <body>
 
-<div id="login" class="box">
+<div id="login" class="container">
   <h2>Login</h2>
   <input type="text" id="name" placeholder="Enter Name">
-  <br>
-  <button class="btn" onclick="login()">Login</button>
+  <button onclick="login()">Login</button>
 </div>
 
-<div id="game" class="box" style="display:none;">
+<div id="game" class="container" style="display:none;">
   <h2>🐯 Tiger vs 🐲 Dragon</h2>
   <h3>Coins: <span id="coins">100</span></h3>
 
-  <button onclick="play('tiger')">Tiger</button>
-  <button onclick="play('dragon')">Dragon</button>
+  <button class="tiger" onclick="play('tiger')">Tiger</button>
+  <button class="dragon" onclick="play('dragon')">Dragon</button>
 
   <h3 id="result"></h3>
 </div>
 
 <script>
+
 let user="";
 let coins=100;
 
 function login(){
   user = document.getElementById("name").value;
+
   if(user==""){
     alert("Enter name");
     return;
   }
+
+  let saved = localStorage.getItem(user+"_coins");
+  if(saved){
+    coins = parseInt(saved);
+  }
+
+  document.getElementById("coins").innerText=coins;
 
   document.getElementById("login").style.display="none";
   document.getElementById("game").style.display="block";
 }
 
 function play(choice){
+
   let random = Math.random()<0.5 ? "tiger":"dragon";
 
   if(choice==random){
     coins += 10;
-    document.getElementById("result").innerText="You Win 🎉";
+    document.getElementById("result").innerHTML="<span style='color:lime'>You Win 🎉</span>";
   }else{
     coins -= 10;
-    document.getElementById("result").innerText="You Lose 😢";
+    document.getElementById("result").innerHTML="<span style='color:red'>You Lose 😢</span>";
   }
 
   document.getElementById("coins").innerText=coins;
+
+  localStorage.setItem(user+"_coins", coins);
 }
+
 </script>
 
 </body>
