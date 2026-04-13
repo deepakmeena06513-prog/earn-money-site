@@ -2,116 +2,81 @@
 <html>
 <head>
   <title>Tiger Dragon Game</title>
-
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-
   <style>
     body{
-      text-align:center;
-      background: linear-gradient(red, purple);
+      margin:0;
+      font-family: Arial;
+      background: linear-gradient(to right, red, purple);
       color:white;
-      font-family:Arial;
+      text-align:center;
     }
-    input, button{
+    .box{
+      margin-top:50px;
+    }
+    input{
       padding:10px;
-      margin:5px;
       width:80%;
-      border-radius:5px;
-      border:none;
+      margin:10px;
     }
     button{
-      background:blue;
+      padding:12px;
+      width:80%;
+      margin:10px;
+      border:none;
       color:white;
+      font-size:16px;
     }
+    .btn{background:blue;}
   </style>
 </head>
 
 <body>
 
-<h2>📱 OTP Login</h2>
+<div id="login" class="box">
+  <h2>Login</h2>
+  <input type="text" id="name" placeholder="Enter Name">
+  <br>
+  <button class="btn" onclick="login()">Login</button>
+</div>
 
-<input type="text" id="phone" placeholder="Enter Mobile Number">
-<div id="recaptcha"></div>
+<div id="game" class="box" style="display:none;">
+  <h2>🐯 Tiger vs 🐲 Dragon</h2>
+  <h3>Coins: <span id="coins">100</span></h3>
 
-<button onclick="sendOTP()">Send OTP</button>
-
-<br><br>
-
-<input type="text" id="otp" placeholder="Enter OTP">
-<button onclick="verifyOTP()">Verify OTP</button>
-
-<hr>
-
-<div id="game" style="display:none;">
-  <h2>🐯 Tiger vs 🐉 Dragon</h2>
-  <h3>Coins: <span id="balance">100</span></h3>
-
-  <button onclick="playGame('tiger')">Tiger</button>
-  <button onclick="playGame('dragon')">Dragon</button>
+  <button onclick="play('tiger')">Tiger</button>
+  <button onclick="play('dragon')">Dragon</button>
 
   <h3 id="result"></h3>
 </div>
 
 <script>
+let user="";
+let coins=100;
 
-// 🔥 Firebase Config (यह बदलना जरूरी है)
-var firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT",
-};
-
-firebase.initializeApp(firebaseConfig);
-
-let confirmationResult;
-let balance = 100;
-
-// 📲 Send OTP
-function sendOTP(){
-  let phone = "+91" + document.getElementById("phone").value;
-
-  let appVerifier = new firebase.auth.RecaptchaVerifier('recaptcha');
-
-  firebase.auth().signInWithPhoneNumber(phone, appVerifier)
-  .then((result)=>{
-    confirmationResult = result;
-    alert("OTP Sent 📩");
-  }).catch((error)=>{
-    alert(error.message);
-  });
-}
-
-// ✅ Verify OTP
-function verifyOTP(){
-  let code = document.getElementById("otp").value;
-
-  confirmationResult.confirm(code)
-  .then(()=>{
-    alert("Login Success ✅");
-
-    document.getElementById("game").style.display = "block";
-  }).catch(()=>{
-    alert("Wrong OTP ❌");
-  });
-}
-
-// 🎮 Game Logic
-function playGame(choice){
-  let result = Math.random() < 0.5 ? "tiger" : "dragon";
-
-  if(choice == result){
-    balance += 10;
-    document.getElementById("result").innerText = "🎉 You Win!";
-  }else{
-    balance -= 10;
-    document.getElementById("result").innerText = "😢 You Lose!";
+function login(){
+  user = document.getElementById("name").value;
+  if(user==""){
+    alert("Enter name");
+    return;
   }
 
-  document.getElementById("balance").innerText = balance;
+  document.getElementById("login").style.display="none";
+  document.getElementById("game").style.display="block";
 }
 
+function play(choice){
+  let random = Math.random()<0.5 ? "tiger":"dragon";
+
+  if(choice==random){
+    coins += 10;
+    document.getElementById("result").innerText="You Win 🎉";
+  }else{
+    coins -= 10;
+    document.getElementById("result").innerText="You Lose 😢";
+  }
+
+  document.getElementById("coins").innerText=coins;
+}
 </script>
 
 </body>
