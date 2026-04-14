@@ -21,13 +21,8 @@ body{
   text-align:center;
 }
 
-h2{
-  font-size:26px;
-}
-
-h3{
-  font-size:22px;
-}
+h2{ font-size:26px; }
+h3{ font-size:22px; }
 
 button{
   width:100%;
@@ -36,17 +31,12 @@ button{
   font-size:20px;
   border:none;
   border-radius:10px;
-}
-
-.tiger{
-  background:orange;
   color:white;
 }
 
-.dragon{
-  background:green;
-  color:white;
-}
+.tiger{ background:orange; }
+.dragon{ background:green; }
+.ad{ background:purple; }
 </style>
 </head>
 
@@ -54,31 +44,4 @@ button{
 
 <div class="box">
   <h2>🔥 Tiger Dragon Game</h2>
-  <h3 id="coins">Coins: 100</h3>
-
-  <button class="tiger" onclick="play('tiger')">🐯 Tiger</button>
-  <button class="dragon" onclick="play('dragon')">🐲 Dragon</button>
-
-  <h3 id="result"></h3>
-</div>
-
-<script>
-let coins=100;
-
-function play(choice){
-  let random = Math.random()<0.5 ? "tiger":"dragon";
-
-  if(choice==random){
-    coins+=10;
-    document.getElementById("result").innerHTML="<span style='color:lime'>Win 🎉</span>";
-  }else{
-    coins-=10;
-    document.getElementById("result").innerHTML="<span style='color:red'>Lose 😢</span>";
-  }
-
-  document.getElementById("coins").innerText="Coins: "+coins;
-}
-</script>
-
-</body>
-</html>
+  <h3 id="coins">Coins: 100</h3
