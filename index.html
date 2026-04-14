@@ -1,25 +1,66 @@
 <!DOCTYPE html>
 <html>
-<body style="
-background:black;
-color:white;
-text-align:center;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-flex-direction:column;
-">
+<head>
+<title>Tiger Dragon Game</title>
 
-<h2>🔥 Tiger Dragon Game</h2>
+<style>
+body{
+  margin:0;
+  font-family: Arial;
+  background:black;
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
 
-<h3 id="coins">Coins: 100</h3>
-<br><br>
+.box{
+  width:90%;
+  max-width:400px;
+  text-align:center;
+}
 
-<button onclick="play('tiger')">Tiger</button>
-<button onclick="play('dragon')">Dragon</button>
+h2{
+  font-size:26px;
+}
 
-<h3 id="result"></h3>
+h3{
+  font-size:22px;
+}
+
+button{
+  width:100%;
+  padding:18px;
+  margin:10px 0;
+  font-size:20px;
+  border:none;
+  border-radius:10px;
+}
+
+.tiger{
+  background:orange;
+  color:white;
+}
+
+.dragon{
+  background:green;
+  color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>🔥 Tiger Dragon Game</h2>
+  <h3 id="coins">Coins: 100</h3>
+
+  <button class="tiger" onclick="play('tiger')">🐯 Tiger</button>
+  <button class="dragon" onclick="play('dragon')">🐲 Dragon</button>
+
+  <h3 id="result"></h3>
+</div>
 
 <script>
 let coins=100;
@@ -29,10 +70,10 @@ function play(choice){
 
   if(choice==random){
     coins+=10;
-    document.getElementById("result").innerText="Win 🎉";
+    document.getElementById("result").innerHTML="<span style='color:lime'>Win 🎉</span>";
   }else{
     coins-=10;
-    document.getElementById("result").innerText="Lose 😢";
+    document.getElementById("result").innerHTML="<span style='color:red'>Lose 😢</span>";
   }
 
   document.getElementById("coins").innerText="Coins: "+coins;
